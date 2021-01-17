@@ -16,9 +16,11 @@ html, body {
     height:auto;
 }
 
-
+h3.timer {
+    margin-left: 10px;
+}
 .card-body{
-    margin: 10px;
+    margin: 20px;
     border-radius: 20px;
     background-color:#808f85;
 }

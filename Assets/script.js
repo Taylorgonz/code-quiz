@@ -23,22 +23,33 @@ const questions = [{
     correctAnswer: 1
 
 },{
-    question: "",
-    answers: ["Holding Too Many Legumes","Hyper Type Making Language", "Hyper Text Markup Language","Hot Topic Members List"],
-    correctAnswer: "Hyper Text Markup Language"
+    question: "What does JSON stand for?",
+    answers: ["Jerry Seinfeld on Neptune","JavaScript Object Notation", "JavaScript Order Node","Java Stop Origin Now"],
+    correctAnswer: 1
 
 },{
-    question: "What does HTML stand for?",
-    answers: ["Holding Too Many Legumes","Hyper Type Making Language", "Hyper Text Markup Language","Hot Topic Members List"],
-    correctAnswer: "Hyper Text Markup Language"
+    question: "You can use a ____ in Javascript to store multiples of similar data(strings, integers, etc...)?",
+    answers: ["Booleans","Concatenation", "API's","Arrays"],
+    correctAnswer: 3
+
+},{
+    question: "in a CSS file what would '.something { }' be calling on?",
+    answers: ["the class 'something'", "The element 'something'", "The value 'something'","The type 'something'"],
+    correctAnswer: 0
+
+},{
+    question: "What do you us API's for?",
+    answers: ["To push JavaScript to the HTML page", "It's used as a library of CSS with predetermend styling, that can be called upon within the HTML file with classes","It's used to access data and interact with external softwar components,operating systems, or microservices", "It's used to liven the party up"],
+    correctAnswer: 2
 
 }]
+
 
 let currentQuestion = 0;
 let correctAnswers= 0;
 let quizOver= false;
 let userAnswers= [];
-let timer= 60;
+let timer= 30;
 let score = 0;
 let finalScore;
 
@@ -55,7 +66,7 @@ function countdown() {
         
         if(timer >= 0) {
             // condition for quiz to be overs
-            timerDisplay.html('Time Remaining: ' + timer);
+            timerDisplay.text("Time remaining: " + timer);
 
             // going to push game over screen
         }
@@ -89,6 +100,7 @@ function countdown() {
 // calling the startScreen function
 
 function displayCurrentQuestion() {
+    if(currentQuestion< questions.length && timer > 0 ){
     // the current questions, question selector
     let question = questions[currentQuestion].question;
     let questionClass= $("h2.question");
@@ -96,15 +108,11 @@ function displayCurrentQuestion() {
     let numChoices= questions[currentQuestion].answers.length;
     // set the questions class to display current question
     $(questionClass).text(question);
-    
-    let answer;
-
-    let answerbtn = $("<button>");
-    
+    // loop for creating the multiple answer choices
     for (let i = 0; i < numChoices; i ++) {
         
-
-        choice = questions[currentQuestion].answers[i];
+        // variable that holds 
+        let choice = questions[currentQuestion].answers[i];
 
         if(userAnswers[currentQuestion]== i) {
            $('<button class = "btn btn-dark choiceBtn" value = '+ i + '>' + choice + '</button>').appendTo(choiceList);
@@ -115,6 +123,11 @@ function displayCurrentQuestion() {
         
     }
     nextQuestion();
+}
+else {
+    $('h2.answers').text("Game over!")
+    
+}
 };
 
 function nextQuestion () {
@@ -127,7 +140,7 @@ function nextQuestion () {
         if(userChoice === correctAns) {
             score += 10;
         } else {
-            timer -= 10;
+            timer -= 5;
         }
         
         currentQuestion++
@@ -138,6 +151,7 @@ function nextQuestion () {
         console.log(correctAns);
         console.log(userChoice);
         console.log(score);
+
     });
 
 }
