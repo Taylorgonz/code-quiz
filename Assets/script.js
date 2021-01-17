@@ -81,7 +81,7 @@ function countdown() {
 
     // variable that creates button element with classes
     let startButton= $("<button>");
-    startButton.addClass("btn btn-success startButton").text("START")
+    startButton.addClass("btn btn-dark startButton").text("START")
     // title for start 
     $(".question").text("CODING QUIZ")
     // instructions on how the game works
