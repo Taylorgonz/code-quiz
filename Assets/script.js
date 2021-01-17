@@ -5,22 +5,22 @@
 const questions = [{
     question: "What does HTML stand for?",
     answers: ["Holding Too Many Legumes","Hyper Type Making Language", "Hyper Text Markup Language","Hot Topic Members List"],
-    correctAnswer: 3
+    correctAnswer: 2
 
 },{
     question: "What does CSS stand for?",
     answers: ["Cascading Style Sheet","Coloring Sheet Status", "Creating Safe Space","Condescending"],
-    correctAnswer: 1
+    correctAnswer: 0
 
 },{
     question: "How do you write 'Hello World' in and alert box",
     answers: ["alertbox('Hello World')","msg('Hello World');", "alert('Hello World');","popUp('Hello World')"],
-    correctAnswer: 3
+    correctAnswer: 2
 
 },{
     question: "How would you add text to the element with id='something' with JavaScript",
     answers: ["document.selector('.something')","document.getElementById('#something').textContent += 'Hello!';", "document.textcontent(#something, 'Hello!)","addText.textContent('Hello')= #something;"],
-    correctAnswer: 2
+    correctAnswer: 1
 
 },{
     question: "",
@@ -39,7 +39,9 @@ let correctAnswers= 0;
 let quizOver= false;
 let userAnswers= [];
 let timer= 60;
-let t;
+let score = 0;
+let finalScore;
+
 
 
 $(document).ready(function() {
@@ -49,18 +51,17 @@ function countdown() {
     let interval = setInterval(function() {
         timer--;
 
-        $(".timer").append('Time left: ', timer);
-
-        if(timer <= 0) {
+        timerDisplay= $('.timer');
+        
+        if(timer >= 0) {
             // condition for quiz to be overs
-
-            clearInterval(interval);
-            quizOver
+            timerDisplay.html('Time Remaining: ' + timer);
 
             // going to push game over screen
         }
-        else {
-            time
+        if(timer===0) {
+            clearInterval(timer);
+            // gameOver();
         }
 
     }, 1000);
@@ -103,17 +104,43 @@ function displayCurrentQuestion() {
     for (let i = 0; i < numChoices; i ++) {
         
 
-        choice= questions[currentQuestion].answers[i];
+        choice = questions[currentQuestion].answers[i];
 
         if(userAnswers[currentQuestion]== i) {
            $('<button class = "btn btn-dark choiceBtn" value = '+ i + '>' + choice + '</button>').appendTo(choiceList);
         }
         else {
-            $('<button class ="btn btn-dark choiceBtn" value = '+ i + '>' + choice + '</button>').appendTo(choiceList);
+            $('<button class = "btn btn-dark choiceBtn" value = '+ i + '>' + choice + '</button>').appendTo(choiceList);
         }
-
+        
     }
-    
+    nextQuestion();
+};
+
+function nextQuestion () {
+    let button= $('.choiceBtn');
+
+    for (let i = 0; i<button.length; i++) {
+        button[i].addEventListener("click", function(e) {
+            let correctAns = questions[currentQuestion].correctAnswer;
+            let userChoice= parseInt(e.target.getAttribute("value"));
+        if(userChoice === correctAns) {
+            score += 10;
+        } else {
+            timer -= 10;
+        }
+        
+        currentQuestion++
+        $(".answers").empty();
+        displayCurrentQuestion();
+
+        
+        console.log(correctAns);
+        console.log(userChoice);
+        console.log(score);
+    });
+
 }
+};
 
 });
