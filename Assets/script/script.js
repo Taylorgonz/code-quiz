@@ -204,12 +204,6 @@ function endGame() {
     
 }
 
-
-
-
-
 const highScores = JSON.parse(localStorage.getItem("highScore")) || [];
-};
-
 
 });
