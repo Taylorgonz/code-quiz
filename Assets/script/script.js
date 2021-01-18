@@ -188,7 +188,6 @@ function nextQuestion () {
 }
 };
 
-console.log(highScores);
 // end of the game function
 function endGame() {
     clearTimeout(startCountdown);
@@ -204,6 +203,6 @@ function endGame() {
     
 }
 
-const highScores = JSON.parse(localStorage.getItem("highScore")) || [];
+// const highScores = JSON.parse(localStorage.getItem("highScore")) || [];
 
 });
