@@ -61,6 +61,8 @@ let finalScore;
 
 $(document).ready(function() {
 
+const mostRecentScore = localStorage.getItem("mostRecentScore");
+
 let answerEl = $("#answers");
 let questionEl = $("#question");
 let timerEl = $("#timer");
@@ -88,7 +90,7 @@ let finalScore=$('#finalScore')
         if(timeLeft===0) {
             answerEl.remove()
             endGame();
-            
+            localStorage.setItem('mostRecentScore', score);
         }
 
     };             
@@ -125,15 +127,9 @@ function displayCurrentQuestion() {
     if(currentQuestion < questions.length && timeLeft > 0 ){
     let resetButton= reset.addClass("btn btn-danger reset").text("reset")
     resetButton.append(reset);
-    resetButton.on("click", function() {
+    resetButton.on("click", function(event) {
+        event.stopPropagation();
         location.reload();
-        // answerEl.empty();
-        // questionEl.empty();
-        // clearTimeout(startCountdown);
-        // reset.remove();
-        // score = 0;
-        
-        // startGame();
     })
     // the current questions, question selector
     let question = questions[currentQuestion].question;
@@ -161,6 +157,7 @@ function displayCurrentQuestion() {
 else {
     answerEl.remove()
     endGame();
+    localStorage.setItem('mostRecentScore', score);
 }
 };
 // function to move through questions
@@ -191,15 +188,28 @@ function nextQuestion () {
 }
 };
 
+console.log(highScores);
 function endGame() {
     clearTimeout(startCountdown);
     reset.remove();
-      
-    questionEl.text("GAME OVER!");
-    finalScore.append("<h3>Final Score: " + score + "</h3>");
 
+    questionEl.text("GAME OVER!");
+    finalScore.append("<h3>Final Score: " + score + "</h3>").append("<input type='text' name='username' id='initials' placeholder='enter initials' maxlength='5'/> ").append("<button type='button' class='btn btn-dark submit'>Submit</button>");
+    $('.submit').on("click", function(event) {
+        
+    })
+
+    // allowing submit button to be pressed if input exists
+    
 }
 
+
+
+
+
+const highScores = JSON.parse(localStorage.getItem("highScore")) || [];
+let savedScore= {
+};
 
 // function getScore() {
 //     if (localStorage.getItem('score'))
