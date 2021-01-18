@@ -52,7 +52,8 @@ let currentQuestion = 0;
 let correctAnswers= 0;
 let quizOver= false;
 let userAnswers= [];
-let timer= 30;
+let timeLeft=30;
+let startCountdown;
 let score = 0;
 let finalScore;
 
@@ -64,53 +65,76 @@ let answerEl = $("#answers");
 let questionEl = $("#question");
 let timerEl = $("#timer");
 let infoEl = $("#info");
+let reset= $('#reset');
+let finalScore=$('#finalScore')
 // timer function
-function countdown() {
-    let interval = setInterval(function() {
-        timer--;
+
+        function countdown() {
+            timeLeft --;
+            timerEl.text('Time remaining: ' + timeLeft);
+            timer();
+        };
+
+        function timer() {
+            startCountdown= setTimeout(countdown, 1000);
+
+
         // timerDisplay = $('#timer')
-        if(timer >= 0) {
+        if(timeLeft >= 0) {
             // condition for quiz to be overs
-            timerEl.text("Time remaining: " + timer);
 
             // going to push game over screen
         }
-        if(timer===0) {
-            clearInterval(timer);
+        if(timeLeft===0) {
+            answerEl.remove()
             endGame();
             
         }
 
-    }, 1000);
-};               
+    };             
 
 
     // variable that creates button element with classes
     
-    let startButton= $("<button>");
     
-    startButton.addClass("btn btn-dark startButton").text("START")
-    function startGame() {
-    // title for start 
-    questionEl.text("CODING QUIZ")
-    // instructions on how the game works
-    infoEl.text("You have one minute to answer as many of the questions as possible. Once the time runs out/you complete all the questions you can save your score and try again! note: choose carefully because once you choose theres no turning back!");
-    // start button
-    answerEl.append(startButton);
 
-    
+    function startGame() {
+        // creating button function
+        let startButton= $("<button>");
+        startButton.addClass("btn btn-dark startButton").text("START")
+    // title for start 
+        questionEl.text("CODING QUIZ")
+    // instructions on how the game works
+        infoEl.text("You have one minute to answer as many of the questions as possible. Once the time runs out/you complete all the questions you can save your score and try again! note: choose carefully because once you choose theres no turning back!");
+    // start button
+        answerEl.append(startButton);
+
+    // start button function
     $(".startButton").on("click", function(e) {
-        countdown();
         answerEl.empty();
         displayCurrentQuestion();
         infoEl.text("")
+        timer();
     });
 };
     startGame();
 // calling the startScreen function
 
+// function that displays current question
 function displayCurrentQuestion() {
-    if(currentQuestion< questions.length && timer > 0 ){
+    if(currentQuestion < questions.length && timeLeft > 0 ){
+    let resetButton= reset.addClass("btn btn-danger reset").text("reset")
+    resetButton.append(reset);
+    resetButton.on("click", function() {
+        location.reload();
+        // answerEl.empty();
+        // questionEl.empty();
+        // clearTimeout(startCountdown);
+        // reset.remove();
+        // score = 0;
+        
+        // startGame();
+    })
     // the current questions, question selector
     let question = questions[currentQuestion].question;
     let questionClass= questionEl;
@@ -135,12 +159,11 @@ function displayCurrentQuestion() {
     nextQuestion();
 }
 else {
-
-    $('h2.answers').text("Game over!")
-    
+    answerEl.remove()
+    endGame();
 }
 };
-
+// function to move through questions
 function nextQuestion () {
     let button= $('.choiceBtn');
 
@@ -151,7 +174,7 @@ function nextQuestion () {
         if(userChoice === correctAns) {
             score += 10;
         } else {
-            timer -= 5;
+            timeLeft -= 5;
         }
         
         currentQuestion++
@@ -167,5 +190,20 @@ function nextQuestion () {
 
 }
 };
+
+function endGame() {
+    clearTimeout(startCountdown);
+    reset.remove();
+      
+    questionEl.text("GAME OVER!");
+    finalScore.append("<h3>Final Score: " + score + "</h3>");
+
+}
+
+
+// function getScore() {
+//     if (localStorage.getItem('score'))
+// }
+
 
 });
