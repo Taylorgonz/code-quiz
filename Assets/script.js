@@ -18,8 +18,8 @@ const questions = [{
     correctAnswer: 2
 
 },{
-    question: "How would you add text to the element with id='something' with JavaScript",
-    answers: ["document.selector('.something')","document.getElementById('#something').textContent += 'Hello!';", "document.textcontent(#something, 'Hello!)","addText.textContent('Hello')= #something;"],
+    question: "How do you call and class with jquery",
+    answers: ["call('something');","$('.something');", "comeHere('#something');","helloWorld('something');"],
     correctAnswer: 1
 
 },{
@@ -44,7 +44,10 @@ const questions = [{
 
 }]
 
-
+// let answerEl = document.getElementById("answers");
+// let questionEl = document.getElementById("question");
+// let timerEl = document.getElementById("timer");
+// let infoEl = document.getElementById("info");
 let currentQuestion = 0;
 let correctAnswers= 0;
 let quizOver= false;
@@ -57,22 +60,25 @@ let finalScore;
 
 $(document).ready(function() {
 
+let answerEl = $("#answers");
+let questionEl = $("#question");
+let timerEl = $("#timer");
+let infoEl = $("#info");
 // timer function
 function countdown() {
     let interval = setInterval(function() {
         timer--;
-
-        timerDisplay= $('.timer');
-        
+        // timerDisplay = $('#timer')
         if(timer >= 0) {
             // condition for quiz to be overs
-            timerDisplay.text("Time remaining: " + timer);
+            timerEl.text("Time remaining: " + timer);
 
             // going to push game over screen
         }
         if(timer===0) {
             clearInterval(timer);
-            // gameOver();
+            endGame();
+            
         }
 
     }, 1000);
@@ -80,31 +86,35 @@ function countdown() {
 
 
     // variable that creates button element with classes
+    
     let startButton= $("<button>");
+    
     startButton.addClass("btn btn-dark startButton").text("START")
+    function startGame() {
     // title for start 
-    $(".question").text("CODING QUIZ")
+    questionEl.text("CODING QUIZ")
     // instructions on how the game works
-    $(".info").text("You have one minute to answer as many of the questions as possible. Once the time runs out/you complete all the questions you can save your score and try again! note: choose carefully because once you choose theres no turning back!");
-    // start butto
-    $(".answers").append(startButton);
+    infoEl.text("You have one minute to answer as many of the questions as possible. Once the time runs out/you complete all the questions you can save your score and try again! note: choose carefully because once you choose theres no turning back!");
+    // start button
+    answerEl.append(startButton);
 
     
     $(".startButton").on("click", function(e) {
         countdown();
-        $(".startButton").remove();
+        answerEl.empty();
         displayCurrentQuestion();
-        $(".info").text("")
+        infoEl.text("")
     });
-    
+};
+    startGame();
 // calling the startScreen function
 
 function displayCurrentQuestion() {
     if(currentQuestion< questions.length && timer > 0 ){
     // the current questions, question selector
     let question = questions[currentQuestion].question;
-    let questionClass= $("h2.question");
-    let choiceList=$("div.answers");
+    let questionClass= questionEl;
+    let choiceList= answerEl;
     let numChoices= questions[currentQuestion].answers.length;
     // set the questions class to display current question
     $(questionClass).text(question);
@@ -125,6 +135,7 @@ function displayCurrentQuestion() {
     nextQuestion();
 }
 else {
+
     $('h2.answers').text("Game over!")
     
 }
