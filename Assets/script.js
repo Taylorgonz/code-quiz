@@ -163,7 +163,7 @@ else {
 // function to move through questions
 function nextQuestion () {
     let button= $('.choiceBtn');
-
+    // loop to to check answers
     for (let i = 0; i<button.length; i++) {
         button[i].addEventListener("click", function(e) {
             let correctAns = questions[currentQuestion].correctAnswer;
@@ -173,7 +173,7 @@ function nextQuestion () {
         } else {
             timeLeft -= 5;
         }
-        
+        // next question once the current question has been answered
         currentQuestion++
         $(".answers").empty();
         displayCurrentQuestion();
@@ -189,6 +189,7 @@ function nextQuestion () {
 };
 
 console.log(highScores);
+// end of the game function
 function endGame() {
     clearTimeout(startCountdown);
     reset.remove();
@@ -208,12 +209,7 @@ function endGame() {
 
 
 const highScores = JSON.parse(localStorage.getItem("highScore")) || [];
-let savedScore= {
 };
-
-// function getScore() {
-//     if (localStorage.getItem('score'))
-// }
 
 
 });
