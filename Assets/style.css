@@ -1,7 +1,6 @@
 html, body {
     display: flexbox;
     width: 100%;
-    font-family;
     background-color: #eef1f1;
     text-align: center;
 }
