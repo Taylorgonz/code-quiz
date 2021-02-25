@@ -39,7 +39,7 @@ const questions = [{
 
 }, {
     question: "What do you us API's for?",
-    answers: ["To push JavaScript to the HTML page", "It's used as a library of CSS with predetermend styling, that can be called upon within the HTML file with classes", "It's used to access data and interact with external softwar components,operating systems, or microservices", "It's used to liven the party up"],
+    answers: ["To push JavaScript to the HTML page", "It's used as a library of CSS with predetermend styling, that can be called upon within the HTML file with classes", "It's used to access data and interact with external software components,operating systems, or microservices", "It's used to liven the party up"],
     correctAnswer: 2
 
 }]
@@ -60,83 +60,92 @@ console.log(savedScores)
 
 
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
 
-    let answerEl = $("#answers");
-    let questionEl = $("#question");
-    let timerEl = $("#timer");
-    let infoEl = $("#info");
-    let reset = $('#reset');
-    let finalScore = $('#finalScore');
-    let highScore = $('#highScore');
-    // timer function
+let answerEl = $("#answers");
+let questionEl = $("#question");
+let timerEl = $("#timer");
+let infoEl = $("#info");
+let reset = $('#reset');
+let finalScore = $('#finalScore');
+let highScore = $('#highScore');
+// timer function
 
-    function countdown() {
-        timeLeft--;
-        timerEl.text('Time remaining: ' + timeLeft);
-        timer();
-    };
+function countdown() {
+    timeLeft--;
+    timerEl.text('Time remaining: ' + timeLeft);
+    timer();
+};
 
-    function timer() {
-        startCountdown = setTimeout(countdown, 1000);
-
-
-        // timerDisplay = $('#timer')
-        if (timeLeft >= 0) {
-            // condition for quiz to be overs
-
-            // going to push game over screen
-        }
-        if (timeLeft === 0) {
-            answerEl.remove()
-            endGame();
-            localStorage.setItem('mostRecentScore', score);
-        }
-
-    };
+function timer() {
+    startCountdown = setTimeout(countdown, 1000);
 
 
-    // variable that creates button element with classes
+    // timerDisplay = $('#timer')
+    if (timeLeft >= 0) {
+        // condition for quiz to be overs
 
-
-
-    function startGame() {
-        // creating button function
-        let startButton = $("<button>");
-        startButton.addClass("btn btn-dark startButton").text("START")
-        // title for start 
-        questionEl.text("CODING QUIZ")
-        // instructions on how the game works
-        infoEl.text("You have 30 seconds to answer as many of the questions as possible. Once the time runs out/you complete all the questions you can save your score and try again! note: choose carefully because once you choose theres no turning back!");
-        // start button
-        answerEl.append(startButton);
-
-        // start button function
-        $(".startButton").on("click", function (e) {
-            answerEl.empty();
-            displayCurrentQuestion();
-            infoEl.text("")
-            timer();
-        });
-    };
-    startGame();
-    // calling the startScreen function
-
-    // reset button function 
-    function resetButton() {
-        let resetButton = reset.addClass("btn btn-danger reset").text("reset");
-        resetButton.append(reset);
-        resetButton.on("click", function (event) {
-            event.stopPropagation();
-            location.reload();
-        });
+        // going to push game over screen
     }
-    // function that displays current question
-    function displayCurrentQuestion() {
-        if (currentQuestion < questions.length && timeLeft > 0) {
-            resetButton();
-        
+    if (timeLeft === 0) {
+        answerEl.remove()
+        endGame();
+        localStorage.setItem('mostRecentScore', score);
+    }
+
+};
+
+
+
+
+function startGame() {
+    // creating button function
+    let startButton = $("<button>");
+    let highScoreButton = $('<button>')
+
+    startButton.addClass("btn btn-success startButton").text("START")
+    highScoreButton.addClass("btn btn-dark highScoreButton").text('High Scores')
+    // title for start 
+    questionEl.text("CODING QUIZ")
+    // instructions on how the game works
+    infoEl.text("You have 30 seconds to answer as many of the questions as possible. Once the time runs out/you complete all the questions you can save your score and try again! note: choose carefully because once you choose theres no turning back!");
+    // start button
+    answerEl.append(startButton).append(highScoreButton);
+
+
+    // start button function
+    $(".startButton").on("click", (e) => {
+        answerEl.empty();
+        displayCurrentQuestion();
+        infoEl.text("")
+        timer();
+        highScore.empty();
+    });
+
+    $(".highScoreButton").on("click", (e) => {
+        highScores();
+        highScore.append("<button class='btn btn-danger clearButton'> Clear </button>'")
+    $('.clearButton').on('click', (e) => highScore.empty());
+    })
+};
+startGame();
+// calling the startScreen function
+
+// reset button function 
+function resetButton() {
+    let resetButton = reset.addClass("btn btn-danger reset").text("reset");
+    resetButton.append(reset);
+    resetButton.on("click", function (event) {
+        event.stopPropagation();
+        location.reload();
+    });
+}
+// function that displays current question
+function displayCurrentQuestion() {
+    if (currentQuestion < questions.length && timeLeft > 0) {
+        resetButton();
+
 
         // the current questions, question selector
         let question = questions[currentQuestion].question;
@@ -152,16 +161,16 @@ $(document).ready(function () {
             let choice = questions[currentQuestion].answers[i];
 
             if (userAnswers[currentQuestion] == i) {
-                $('<button class = "btn btn-dark choiceBtn" value = ' + i + '>' + choice + '</button>').appendTo(choiceList);
+                $('<button class = "btn btn-dark choiceBtn hover" value = ' + i + '>' + choice + '</button>').appendTo(choiceList);
             }
             else {
-                $('<button class = "btn btn-dark choiceBtn" value = ' + i + '>' + choice + '</button>').appendTo(choiceList);
+                $('<button class = "btn btn-dark choiceBtn hover" value = ' + i + '>' + choice + '</button>').appendTo(choiceList);
             }
 
         }
         nextQuestion();
     }
-        else {
+    else {
         answerEl.remove()
         endGame();
     }
@@ -194,17 +203,17 @@ function nextQuestion() {
     }
 };
 
+
 // high score display function
 function highScores() {
 
-    highScore.append(`<h2> HighScores </h2>`)
-    for (let i = 0; i < 5; i++) {
-        let rendInitial = savedScores[i].initial;
-        let rendScore = savedScores[i].score;
+    highScore.append(`<h2> HighScores </h2>`);
 
-        highScore.append(`<h3>${rendInitial}: ${rendScore}</h3>`);
-        console.log(rendInitial);
-    }
+    savedScores.map(saveScore => {
+        highScore.append(`<h3> ${saveScore.initial} : ${saveScore.score} </h3>`)
+    })
+
+    
 }
 
 // end of the game function
@@ -221,13 +230,16 @@ function endGame() {
     // allowing submit button to be pressed if input exists
 
 }
-});
+
 
 function saveHighScores() {
 
     $('.submit').on("click", function (event) {
         initials = $("#initials")[0].value;
 
+        if (highScore !== null) {
+            highScore.empty();
+        }
         if (initials !== '' || null) {
             saveScore = {
                 initial: initials,
@@ -242,8 +254,10 @@ function saveHighScores() {
 
             localStorage.setItem("savedScores", JSON.stringify(savedScores));
 
-            highScores
+            highScores();
+
             console.log(savedScores);
+            $('.submit').attr('disabled', true);
         }
     })
-}
+};

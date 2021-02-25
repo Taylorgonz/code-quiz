@@ -3,11 +3,12 @@ html, body {
     width: 100%;
     background-color: #eef1f1;
     text-align: center;
+    padding: 0px;
+    margin: 0px;
 }
 
-.wrapper {
-    content: flex;
-    justify-content: center;
+.container{
+    padding-top: 40px;
 }
 
 .answers button {
